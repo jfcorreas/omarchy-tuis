@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# korben:summary=Launch a Remote Desktop Connection with xfreerdp3
+# korben:args=[server username domain window-size]
+
+
+set -e
+
+if (( $# == 4 )); then
+  REMOTE_SERVER="$1"
+  REMOTE_USER="$2"
+  DOMAIN="$3"
+  WINDOW_SIZE="$4"
+  echo -e "Remote Server: $REMOTE_SERVER"
+  echo -e "Username: $REMOTE_USER"
+  echo -e "Domain: $DOMAIN"
+  echo -e "Window Size: $WINDOW_SIZE"
+  USE_DEFAULT=$(gum choose --header "Do you want to use this parameters for the connection?" Yes No)
+else
+  USE_DEFAULT="No"
+fi
+
+
+if [[ "$USE_DEFAULT" ==  "No" ]]; then
+  echo -e "\e[32mPlease, tell me the params for the connection...\n\e[0m"
+  REMOTE_SERVER=$(gum input --prompt "Remote Server> " --placeholder "A valid IPv4")
+  REMOTE_USER=$(gum input --prompt "Username> " --placeholder "pepe")
+  DOMAIN=$(gum input --prompt "Domain> " --placeholder "company.org")
+  WINDOW_SIZE=$(gum choose --header "Window size (resolution)" 1024x768 1920x1080)
+fi
+
+if [[ -z  REMOTE_SERVER || -z $REMOTE_USER || -z $WINDOW_SIZE ]]; then
+  echo "You must set server, username, and window size!"
+  exit 1
+fi
+
+echo -e "xfreerdp3 /u:$REMOTE_USER /v:$REMOTE_SERVER /size:$WINDOW_SIZE"
+echo
+gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
