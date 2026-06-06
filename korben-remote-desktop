@@ -29,11 +29,11 @@ if [[ "$USE_DEFAULT" ==  "No" ]]; then
   WINDOW_SIZE=$(gum choose --header "Window size (resolution)" 1024x768 1920x1080)
 fi
 
-if [[ -z  REMOTE_SERVER || -z $REMOTE_USER || -z $WINDOW_SIZE ]]; then
-  echo "You must set server, username, and window size!"
+if [[ -z  REMOTE_SERVER || -z $REMOTE_USER || -z $DOMAIN || -z $WINDOW_SIZE ]]; then
+  echo "You must set server, username, domain and window size!"
   exit 1
 fi
 
-echo -e "xfreerdp3 /u:$REMOTE_USER /v:$REMOTE_SERVER /size:$WINDOW_SIZE"
+xfreerdp3 /u:$REMOTE_USER /v:$REMOTE_SERVER /d:$DOMAIN /size:$WINDOW_SIZE
 echo
 gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
