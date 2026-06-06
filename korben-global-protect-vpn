@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# korben:summary=Launch a Global Protect VPN Connection with openconnect
+# korben:args=[vpnserver browser]
+
+#set -e
+BROWSER="chromium"
+
+if (( $# == 2 )); then
+  REMOTE_SERVER="$1"
+  BROWSER="$2"
+  echo -e "Remote Server: $REMOTE_SERVER"
+  echo -e "Browser: $BROWSER"
+  USE_DEFAULT=$(gum choose --header "Do you want to use this VPN server and browser for the connection?" Yes No)
+else
+  USE_DEFAULT="No"
+fi
+
+if [[ "$USE_DEFAULT" ==  "No" ]]; then
+  echo -e "\e[32mPlease, tell me the VPN server and the browser for the connection...\n\e[0m"
+  REMOTE_SERVER=$(gum input --prompt "VPN Server> " --placeholder "A valid URL")
+  BROWSER=$(gum choose --header "Browser> " chromium firefox edge brave)
+fi
+
+if [[ -z  REMOTE_SERVER ]]; then
+  echo "You must set VPN server!"
+  exit 1
+fi
+
+sudo -E gpclient connect --browser $BROWSER $REMOTE_SERVER
+echo
+gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
