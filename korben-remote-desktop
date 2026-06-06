@@ -4,7 +4,7 @@
 # korben:args=[server username domain window-size]
 
 
-set -e
+#set -e
 
 if (( $# == 4 )); then
   REMOTE_SERVER="$1"
@@ -19,7 +19,6 @@ if (( $# == 4 )); then
 else
   USE_DEFAULT="No"
 fi
-
 
 if [[ "$USE_DEFAULT" ==  "No" ]]; then
   echo -e "\e[32mPlease, tell me the params for the connection...\n\e[0m"
