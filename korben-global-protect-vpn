@@ -19,7 +19,7 @@ fi
 if [[ "$USE_DEFAULT" ==  "No" ]]; then
   echo -e "\e[32mPlease, tell me the VPN server and the browser for the connection...\n\e[0m"
   REMOTE_SERVER=$(gum input --prompt "VPN Server> " --placeholder "A valid URL")
-  BROWSER=$(gum choose --header "Browser> " chromium firefox edge brave)
+  BROWSER=$(gum choose --header "Browser> " chromium firefox default chrome)
 fi
 
 if [[ -z  REMOTE_SERVER ]]; then
